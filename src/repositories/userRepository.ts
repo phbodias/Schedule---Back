@@ -1,3 +1,3 @@
 export default async function initializedRepository() {
-    return ["Server in running"];
-  }
+  return ["Server in running"];
+}
