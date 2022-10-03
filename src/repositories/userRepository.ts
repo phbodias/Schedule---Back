@@ -6,7 +6,7 @@ export async function create(user: TUserBody) {
   return prisma.users.create({ data: user });
 }
 
-export async function findByEmail(email: string) {
+export async function findByEmail(email: string): Promise<Users> {
   const user: Users = await prisma.users.findFirst({ where: { email } });
   return user;
 }
