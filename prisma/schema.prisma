@@ -9,3 +9,145 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Countries {
+  id        Int      @id @default(autoincrement())
+  country   String   @unique
+  createdAt DateTime @default(now())
+  states    States[]
+
+  @@map("countries")
+}
+
+model States {
+  id         Int       @id @default(autoincrement())
+  state      String
+  Countries  Countries @relation(fields: [countrieId], references: [id])
+  countrieId Int
+  createdAt  DateTime  @default(now())
+  cities     Cities[]
+
+  @@map("states")
+}
+
+model Cities {
+  id            Int             @id @default(autoincrement())
+  States        States          @relation(fields: [stateId], references: [id])
+  stateId       Int
+  createdAt     DateTime        @default(now())
+  neighborhoods Neighborhoods[]
+
+  @@map("cities")
+}
+
+model Neighborhoods {
+  id             Int              @id @default(autoincrement())
+  Cities         Cities           @relation(fields: [citieId], references: [id])
+  citieId        Int
+  createdAt      DateTime         @default(now())
+  establishments Establishments[]
+
+  @@map("neighborhoods")
+}
+
+model Users {
+  id            Int             @id @default(autoincrement())
+  name          String
+  password      String
+  email         String          @unique
+  createdAt     DateTime        @default(now())
+  phones        Phones[]
+  profilePics   ProfilePics[]
+  professionals Professionals[]
+
+  @@map("users")
+}
+
+model Phones {
+  id        Int      @id @default(autoincrement())
+  phone     Int      @unique
+  Users     Users    @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+
+  @@map("phones")
+}
+
+model ProfilePics {
+  id        Int      @id @default(autoincrement())
+  url       String
+  Users     Users    @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+
+  @@map("profilePics")
+}
+
+model Establishments {
+  id                  Int                    @id @default(autoincrement())
+  name                String
+  street              String
+  number              Int
+  complement          String
+  Neighborhoods       Neighborhoods          @relation(fields: [neighborhoodId], references: [id])
+  neighborhoodId      Int
+  createdAt           DateTime               @default(now())
+  professionals       Professionals[]
+  establishmentPhones EstablishmentsPhones[]
+  backgroundPic       BackgroundPics[]
+  pics                EstablishmentsPics[]
+
+  @@map("establishments")
+}
+
+model EstablishmentsPhones {
+  id              Int            @id @default(autoincrement())
+  number          Int            @unique
+  Establishments  Establishments @relation(fields: [establishmentId], references: [id])
+  establishmentId Int
+  createdAt       DateTime       @default(now())
+
+  @@map("establishmentsPhones")
+}
+
+model Services {
+  id            Int             @id @default(autoincrement())
+  service       String          @unique
+  createdAt     DateTime        @default(now())
+  professionals Professionals[]
+
+  @@map("services")
+}
+
+model Professionals {
+  id              Int            @id @default(autoincrement())
+  Users           Users          @relation(fields: [userId], references: [id])
+  userId          Int
+  Services        Services       @relation(fields: [serviceId], references: [id])
+  serviceId       Int
+  Establishments  Establishments @relation(fields: [establishmentId], references: [id])
+  establishmentId Int
+  createdAt       DateTime       @default(now())
+
+  @@map("professionals")
+}
+
+model BackgroundPics {
+  id              Int            @id @default(autoincrement())
+  url             String
+  Establishments  Establishments @relation(fields: [establishmentId], references: [id])
+  establishmentId Int
+  createdAt       DateTime       @default(now())
+
+  @@map("backgroundPics")
+}
+
+model EstablishmentsPics {
+  id              Int            @id @default(autoincrement())
+  url             String
+  Establishments  Establishments @relation(fields: [establishmentId], references: [id])
+  establishmentId Int
+  createdAt       DateTime       @default(now())
+
+  @@map("establishmentsPics")
+}
