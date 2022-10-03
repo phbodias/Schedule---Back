@@ -5,7 +5,7 @@ export function validateSchemaMiddleware(schema: ObjectSchema) {
   return (req: Request, res: Response, next: NextFunction) => {
     const validation = schema.validate(req.body, { abortEarly: false });
     if (validation.error) {
-      throw { code: "IncompatibleFormat", message: validation.error.message };
+      throw { code: "IncompatibleFormat", message: [`Revise os campos: ${validation.error.message}`] };
     }
 
     next();
