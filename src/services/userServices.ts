@@ -14,3 +14,7 @@ export async function create(user: TUserBody) {
 export async function findByEmail(email: string) {
   return await userRepository.findByEmail(email);
 }
+
+export async function findById(id: number) {
+  return await userRepository.findById(id);
+}
