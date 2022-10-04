@@ -78,6 +78,7 @@ model ProfilePics {
   url       String
   Users     Users    @relation(fields: [userId], references: [id])
   userId    Int      @unique
+  s3key     String
   createdAt DateTime @default(now())
 
   @@map("profilePics")

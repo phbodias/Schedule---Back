@@ -11,3 +11,7 @@ export async function findProfPicByUserId(
 ): Promise<ProfilePics> {
   return await prisma.profilePics.findFirst({ where: { userId } });
 }
+
+export async function deleteProfPic(id: number) {
+  return await prisma.profilePics.delete({ where: { id } });
+}
