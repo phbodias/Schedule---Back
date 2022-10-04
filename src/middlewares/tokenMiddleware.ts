@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 
-export function createToken(id: number) {
+export async function createToken(id: number) {
   const secret: string = process.env.TOKEN_SECRET_KEY as string;
   const token: string = jwt.sign({ id }, secret, {
     expiresIn: "1h",
