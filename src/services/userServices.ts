@@ -1,6 +1,6 @@
 import * as userRepository from "../repositories/userRepository";
-import { TUserBody } from "../types/userTypes";
-import { encryptPassword } from "../utils/encrypt";
+import { TUserBody, TSigninBody } from "../types/userTypes";
+import { comparePasswords, encryptPassword } from "../utils/encrypt";
 
 export async function create(user: TUserBody) {
   const emailNotAvailable: boolean = !!(await findByEmail(user.email));
@@ -11,6 +11,24 @@ export async function create(user: TUserBody) {
   return await userRepository.create(user);
 }
 
-export async function findByEmail(email: string) {
+export async function checkCredentials(user: TSigninBody) {
+  const userExists = await findByEmail(user.email);
+  if (!userExists) throw { code: "NotFound", message: "You haven't an account yet." };
+
+  const matchPasswords: boolean = await comparePasswords(
+    user.password,
+    userExists.password
+  );
+  if (!matchPasswords)
+    throw { code: "Unauthorized", message: "Email or password incorrect!" };
+
+  return userExists.id;
+}
+
+async function findByEmail(email: string) {
   return await userRepository.findByEmail(email);
+}
+
+async function findById(id: number) {
+  return await userRepository.findById(id);
 }
