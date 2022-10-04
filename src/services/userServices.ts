@@ -1,7 +1,6 @@
 import * as userRepository from "../repositories/userRepository";
 import { TUserBody, TSigninBody } from "../types/userTypes";
 import { comparePasswords, encryptPassword } from "../utils/encrypt";
-import { createToken } from "../middlewares/tokenMiddleware";
 
 export async function create(user: TUserBody) {
   const emailNotAvailable: boolean = !!(await findByEmail(user.email));
@@ -13,17 +12,17 @@ export async function create(user: TUserBody) {
 }
 
 export async function checkCredentials(user: TSigninBody) {
-  const { id, password: cryptPassword } = await findByEmail(user.email);
-  if (!id) throw { code: "NotFound", message: "You haven't an account yet." };
+  const userExists = await findByEmail(user.email);
+  if (!userExists) throw { code: "NotFound", message: "You haven't an account yet." };
 
   const matchPasswords: boolean = await comparePasswords(
     user.password,
-    cryptPassword
+    userExists.password
   );
   if (!matchPasswords)
     throw { code: "Unauthorized", message: "Email or password incorrect!" };
 
-  return await createToken(id);
+  return userExists.id;
 }
 
 async function findByEmail(email: string) {
