@@ -13,11 +13,11 @@ export async function deleteUploadS3(image: ProfilePics) {
   try {
     const data = await client.send(
       new DeleteObjectCommand({
-        Bucket: "schedulebucketuploads",
+        Bucket: process.env.BUCKET,
         Key: image.s3key,
       })
     );
-    return data; 
+    return data;
   } catch (err) {
     console.log("Error", err);
   }
