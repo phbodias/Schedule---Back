@@ -18,7 +18,7 @@ const s3Config = new S3Client({
 const storageTypes = {
   local: multer.diskStorage({
     destination: (req: any, file: any, cb: any) => {
-      cb(null, path.resolve(__dirname, "..", "images", "uploads"));
+      cb(null, path.resolve(__dirname, "..", "..", "images", "uploads"));
     },
     filename: (req: any, file: any, cb: any) => {
       crypto.randomBytes(16, (err, hash) => {
@@ -40,9 +40,9 @@ const storageTypes = {
       crypto.randomBytes(16, (err, hash) => {
         if (err) cb(err);
 
-        file.key = `${hash.toString("hex")}-${file.originalname}`;
+        const fileName = `${hash.toString("hex")}-${file.originalname}`;
 
-        cb(null, file.key);
+        cb(null, fileName);
       });
     },
   }),

@@ -1,15 +1,17 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import multer from "multer";
+import { validateJWT } from "../middlewares/tokenMiddleware";
 import multerConfig from "../multerConfig/multer";
+import * as uploadController from "../controllers/uploadControllers";
 
 const uploadRoute = Router();
+
+uploadRoute.use(validateJWT);
 
 uploadRoute.post(
   "/profilePic",
   multer(multerConfig).single("profilePic"),
-  (req: Request, res: Response) => {
-    return res.status(200).send(req.file);
-  }
+  uploadController.insertProfilePic
 );
 
 export default uploadRoute;
