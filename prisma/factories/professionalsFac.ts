@@ -8,7 +8,8 @@ export async function createProfessionalsFac(
   serviceId: number
 ) {
   const professionals: TProfessionalData[] = [];
-  for (let i = 0; i < 30; i++) {
+  const n = faker.datatype.number({ min: 5, max: 12 });
+  for (let i = 0; i < n; i++) {
     const professional: TProfessionalData = {
       name: faker.name.fullName(),
       phone: parseInt(faker.phone.number(`${ddd}9########`)),

@@ -45,26 +45,15 @@ model Cities {
 }
 
 model Users {
-  id         Int           @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   name       String
+  email      String      @unique
+  profilePic String      @default("../images/defaultProfilepic/index.jpeg")
   password   String
-  email      String        @unique
-  createdAt  DateTime      @default(now())
-  profilePic ProfilePics[]
+  createdAt  DateTime    @default(now())
   Scheduled  Scheduled[]
 
   @@map("users")
-}
-
-model ProfilePics {
-  id        Int      @id @default(autoincrement())
-  url       String
-  Users     Users    @relation(fields: [userId], references: [id])
-  userId    Int      @unique
-  s3key     String
-  createdAt DateTime @default(now())
-
-  @@map("profilePics")
 }
 
 model Services {
@@ -98,7 +87,7 @@ model Schedule {
   professionalId Int
   day            DateTime
   time           DateTime
-  free           Boolean        @default(false)
+  free           Boolean        @default(true)
   createdAt      DateTime       @default(now())
   Scheduled      Scheduled[]
 

@@ -1,10 +1,12 @@
 import prisma from "../src/databases/postgres";
+import { createProfessionalsFac } from "./factories/professionalsFac";
 
 async function main() {
   await upsertCountries();
   await upsertStates();
   await upsertCities();
   await upsertServices();
+  await createProfessionals();
 }
 
 async function upsertCountries() {
@@ -103,6 +105,40 @@ async function upsertServices() {
     update: {},
     create: { service: "Advogado" },
   });
+}
+
+async function createProfessionals() {
+  const professionals = await prisma.professionals.findFirst();
+  if (!professionals) {
+    await createProfessionalsFac(19, 1, 1);
+    await createProfessionalsFac(19, 1, 2);
+    await createProfessionalsFac(19, 1, 3);
+    await createProfessionalsFac(19, 1, 4);
+    await createProfessionalsFac(19, 1, 5);
+    await createProfessionalsFac(19, 1, 6);
+    await createProfessionalsFac(19, 1, 7);
+    await createProfessionalsFac(19, 2, 1);
+    await createProfessionalsFac(19, 2, 2);
+    await createProfessionalsFac(19, 2, 3);
+    await createProfessionalsFac(19, 2, 4);
+    await createProfessionalsFac(19, 2, 5);
+    await createProfessionalsFac(19, 2, 6);
+    await createProfessionalsFac(19, 2, 7);
+    await createProfessionalsFac(21, 3, 1);
+    await createProfessionalsFac(21, 3, 2);
+    await createProfessionalsFac(21, 3, 3);
+    await createProfessionalsFac(21, 3, 4);
+    await createProfessionalsFac(21, 3, 5);
+    await createProfessionalsFac(21, 3, 6);
+    await createProfessionalsFac(21, 3, 7);
+    await createProfessionalsFac(61, 4, 1);
+    await createProfessionalsFac(61, 4, 2);
+    await createProfessionalsFac(61, 4, 3);
+    await createProfessionalsFac(61, 4, 4);
+    await createProfessionalsFac(61, 4, 5);
+    await createProfessionalsFac(61, 4, 6);
+    await createProfessionalsFac(61, 4, 7);
+  }
 }
 
 main()
