@@ -22,11 +22,13 @@ model Countries {
 model States {
   id         Int       @id @default(autoincrement())
   state      String
+  initials   String
   Countries  Countries @relation(fields: [countrieId], references: [id])
   countrieId Int
   createdAt  DateTime  @default(now())
   cities     Cities[]
 
+  @@unique([initials, countrieId])
   @@map("states")
 }
 
