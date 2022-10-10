@@ -1,5 +1,12 @@
 import prisma from "../src/databases/postgres";
 
+async function main() {
+  await upsertCountries();
+  await upsertStates();
+  await upsertCities();
+  await upsertServices();
+}
+
 async function upsertCountries() {
   await prisma.countries.upsert({
     where: { id: 1 },
@@ -28,8 +35,74 @@ async function upsertStates() {
   });
 }
 
-async function main() {
-  await upsertCountries();
+async function upsertCities() {
+  await prisma.cities.upsert({
+    where: { id: 1 },
+    update: {},
+    create: { city: "Campinas", stateId: 1 },
+  });
+
+  await prisma.cities.upsert({
+    where: { id: 2 },
+    update: {},
+    create: { city: "São Paulo", stateId: 1 },
+  });
+
+  await prisma.cities.upsert({
+    where: { id: 3 },
+    update: {},
+    create: { city: "Rio de Janeiro", stateId: 2 },
+  });
+
+  await prisma.cities.upsert({
+    where: { id: 4 },
+    update: {},
+    create: { city: "Brasília", stateId: 3 },
+  });
+}
+
+async function upsertServices() {
+  await prisma.services.upsert({
+    where: { id: 1 },
+    update: {},
+    create: { service: "Cabeleireiro" },
+  });
+
+  await prisma.services.upsert({
+    where: { id: 2 },
+    update: {},
+    create: { service: "Manicure" },
+  });
+
+  await prisma.services.upsert({
+    where: { id: 3 },
+    update: {},
+    create: { service: "Pedicure" },
+  });
+
+  await prisma.services.upsert({
+    where: { id: 4 },
+    update: {},
+    create: { service: "Mecânico" },
+  });
+
+  await prisma.services.upsert({
+    where: { id: 5 },
+    update: {},
+    create: { service: "Dentista" },
+  });
+
+  await prisma.services.upsert({
+    where: { id: 6 },
+    update: {},
+    create: { service: "Pediatra" },
+  });
+
+  await prisma.services.upsert({
+    where: { id: 7 },
+    update: {},
+    create: { service: "Advogado" },
+  });
 }
 
 main()

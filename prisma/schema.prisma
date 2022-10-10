@@ -38,43 +38,22 @@ model Cities {
   States        States          @relation(fields: [stateId], references: [id])
   stateId       Int
   createdAt     DateTime        @default(now())
-  neighborhoods Neighborhoods[]
+  Professionals Professionals[]
 
   @@unique([city, stateId])
   @@map("cities")
 }
 
-model Neighborhoods {
-  id             Int              @id @default(autoincrement())
-  Cities         Cities           @relation(fields: [citieId], references: [id])
-  citieId        Int
-  createdAt      DateTime         @default(now())
-  establishments Establishments[]
-
-  @@map("neighborhoods")
-}
-
 model Users {
-  id            Int             @id @default(autoincrement())
-  name          String
-  password      String
-  email         String          @unique
-  createdAt     DateTime        @default(now())
-  phones        Phones[]
-  profilePics   ProfilePics[]
-  professionals Professionals[]
+  id         Int           @id @default(autoincrement())
+  name       String
+  password   String
+  email      String        @unique
+  createdAt  DateTime      @default(now())
+  profilePic ProfilePics[]
+  Scheduled  Scheduled[]
 
   @@map("users")
-}
-
-model Phones {
-  id        Int      @id @default(autoincrement())
-  phone     Int      @unique
-  Users     Users    @relation(fields: [userId], references: [id])
-  userId    Int
-  createdAt DateTime @default(now())
-
-  @@map("phones")
 }
 
 model ProfilePics {
@@ -88,33 +67,6 @@ model ProfilePics {
   @@map("profilePics")
 }
 
-model Establishments {
-  id                  Int                    @id @default(autoincrement())
-  name                String
-  street              String
-  number              Int
-  complement          String
-  Neighborhoods       Neighborhoods          @relation(fields: [neighborhoodId], references: [id])
-  neighborhoodId      Int
-  createdAt           DateTime               @default(now())
-  professionals       Professionals[]
-  establishmentPhones EstablishmentsPhones[]
-  backgroundPic       BackgroundPics[]
-  pics                EstablishmentsPics[]
-
-  @@map("establishments")
-}
-
-model EstablishmentsPhones {
-  id              Int            @id @default(autoincrement())
-  number          Int            @unique
-  Establishments  Establishments @relation(fields: [establishmentId], references: [id])
-  establishmentId Int
-  createdAt       DateTime       @default(now())
-
-  @@map("establishmentsPhones")
-}
-
 model Services {
   id            Int             @id @default(autoincrement())
   service       String          @unique
@@ -125,34 +77,39 @@ model Services {
 }
 
 model Professionals {
-  id              Int            @id @default(autoincrement())
-  Users           Users          @relation(fields: [userId], references: [id])
-  userId          Int
-  Services        Services       @relation(fields: [serviceId], references: [id])
-  serviceId       Int
-  Establishments  Establishments @relation(fields: [establishmentId], references: [id])
-  establishmentId Int
-  createdAt       DateTime       @default(now())
+  id         Int        @id @default(autoincrement())
+  name       String
+  phone      Int        @unique
+  address    String
+  profilePic String
+  City       Cities     @relation(fields: [cityId], references: [id])
+  cityId     Int
+  Services   Services   @relation(fields: [serviceId], references: [id])
+  serviceId  Int
+  createdAt  DateTime   @default(now())
+  schedule   Schedule[]
 
   @@map("professionals")
 }
 
-model BackgroundPics {
-  id              Int            @id @default(autoincrement())
-  url             String
-  Establishments  Establishments @relation(fields: [establishmentId], references: [id])
-  establishmentId Int
-  createdAt       DateTime       @default(now())
+model Schedule {
+  id             Int            @id @default(autoincrement())
+  Professionals  Professionals? @relation(fields: [professionalId], references: [id])
+  professionalId Int
+  day            DateTime
+  time           DateTime
+  free           Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  Scheduled      Scheduled[]
 
-  @@map("backgroundPics")
+  @@map("schedule")
 }
 
-model EstablishmentsPics {
-  id              Int            @id @default(autoincrement())
-  url             String
-  Establishments  Establishments @relation(fields: [establishmentId], references: [id])
-  establishmentId Int
-  createdAt       DateTime       @default(now())
-
-  @@map("establishmentsPics")
+model Scheduled {
+  id         Int      @id @default(autoincrement())
+  User       Users    @relation(fields: [userId], references: [id])
+  userId     Int
+  Schedule   Schedule @relation(fields: [scheduleId], references: [id])
+  scheduleId Int      @unique
+  createdAt  DateTime @default(now())
 }
