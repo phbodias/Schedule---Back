@@ -34,6 +34,7 @@ model States {
 
 model Cities {
   id            Int             @id @default(autoincrement())
+  city          String
   States        States          @relation(fields: [stateId], references: [id])
   stateId       Int
   createdAt     DateTime        @default(now())
