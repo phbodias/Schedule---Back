@@ -11,7 +11,7 @@ export async function create(req: Request, res: Response) {
 
 export async function signin(req: Request, res: Response) {
   const user: TSigninBody = req.body;
-  const userId: number = await userServices.checkCredentials(user);
-  const token: string = await createToken(userId);
-  res.status(200).send(token);
+  const userLogged = await userServices.checkCredentials(user);
+  const token: string = await createToken(userLogged.id);
+  res.status(200).send({user: userLogged, token});
 }

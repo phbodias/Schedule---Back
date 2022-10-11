@@ -13,7 +13,8 @@ export async function create(user: TUserBody) {
 
 export async function checkCredentials(user: TSigninBody) {
   const userExists = await findByEmail(user.email);
-  if (!userExists) throw { code: "NotFound", message: "You haven't an account yet." };
+  if (!userExists)
+    throw { code: "NotFound", message: "You haven't an account yet." };
 
   const matchPasswords: boolean = await comparePasswords(
     user.password,
@@ -22,7 +23,13 @@ export async function checkCredentials(user: TSigninBody) {
   if (!matchPasswords)
     throw { code: "Unauthorized", message: "Email or password incorrect!" };
 
-  return userExists.id;
+  const returnUser = {
+    id: userExists.id,
+    name: userExists.name,
+    profilePic: userExists.profilePic,
+  };
+  
+  return returnUser;
 }
 
 async function findByEmail(email: string) {
