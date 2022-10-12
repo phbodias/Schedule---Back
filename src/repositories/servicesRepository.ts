@@ -6,13 +6,16 @@ export async function getAll() {
 }
 
 export async function getById(id: number) {
+  console.log(id);
   const service: Services = await prisma.services.findFirst({ where: { id } });
   if (!service) throw { code: "NotFound", message: "Service not found" };
   return service;
 }
 
 export async function getByName(service: string) {
-  const serviceDB: Services = await prisma.services.findFirst({ where: { service } });
+  const serviceDB: Services = await prisma.services.findFirst({
+    where: { service },
+  });
   if (!serviceDB) throw { code: "NotFound", message: "Service not found" };
   return serviceDB;
 }

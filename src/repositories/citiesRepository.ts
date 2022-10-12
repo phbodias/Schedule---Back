@@ -1,7 +1,17 @@
 import prisma from "../databases/postgres";
 
 export async function getAll() {
-  return await prisma.cities.findMany({});
+  return await prisma.cities.findMany({
+    select: {
+      id: true,
+      city: true,
+      States: {
+        select: {
+          initials: true,
+        },
+      },
+    },
+  });
 }
 
 export async function findByName(city: string) {

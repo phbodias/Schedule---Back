@@ -49,3 +49,26 @@ export async function getByService(cityId: number, serviceId: number) {
     },
   });
 }
+
+export async function getById(id: number) {
+  return await prisma.professionals.findFirst({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      address: true,
+      profilePic: true,
+      City: {
+        select: {
+          city: true,
+        },
+      },
+      Services: {
+        select: {
+          service: true,
+        },
+      },
+    },
+  });
+}
