@@ -9,7 +9,7 @@
     "dev": "prisma migrate dev && prisma db seed && nodemon src/server.ts"
   },
   "prisma": {
-    "seed": "ts-node dist/prisma/seed.ts"
+    "seed": "node dist/prisma/seed.ts"
   },
   "repository": {
     "type": "git",
