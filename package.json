@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc && npx prisma migrate deploy",
-    "start": "prisma db seed node dist/src/server.js",
+    "start": "node dist/src/server.js",
     "dev": "prisma migrate dev && prisma db seed && nodemon src/server.ts"
   },
   "prisma": {
-    "seed": "node dist/prisma/seed.js"
+    "seed": "ts-node --transpile-only ./prisma/seed.ts"
   },
   "repository": {
     "type": "git",
