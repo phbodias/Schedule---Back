@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && npx prisma migrate deploy",
     "start": "node dist/src/server.js",
-    "dev": "prisma migrate dev && prisma db seed && nodemon src/server.ts"
+    "dev": "nodemon src/server.ts"
   },
   "prisma": {
     "seed": "ts-node --transpile-only ./prisma/seed.ts"
