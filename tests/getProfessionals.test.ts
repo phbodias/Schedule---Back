@@ -31,3 +31,11 @@ describe("tests for route /professionals/:service", () => {
   });
 });
 
+describe("tests for route /professional/:id", () => {
+  it("get s professional for id, returns status 200 and a array", async () => {
+    const { id, name } = await prisma.professionals.findFirst();
+    const result = await supertest(app).get(`/professional/${id}`);
+    expect(result.status).toBe(200);
+    expect(result.body.name === name);
+  });
+});
