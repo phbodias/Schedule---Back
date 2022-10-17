@@ -21,3 +21,13 @@ describe("tests for route /professionals", () => {
     expect(result.body[0].City.city === city);
   });
 });
+
+describe("tests for route /professionals/:service", () => {
+  it("get professionals for a certain service, returns status 200 and a array", async () => {
+    const { id, service } = await prisma.services.findFirst();
+    const result = await supertest(app).get(`/professionals/${id}`);
+    expect(result.status).toBe(200);
+    expect(result.body[0].Services.service === service);
+  });
+});
+
